@@ -6,7 +6,12 @@ lazy val `playscalaakkawebcrawler` = (project in file(".")).enablePlugins(PlaySc
 
 scalaVersion := "2.11.8"
 
-libraryDependencies ++= Seq( jdbc , cache , ws   , specs2 % Test )
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" % "akka-actor_2.11" % "2.4.17",
+  "org.jsoup" % "jsoup" % "1.10.3",
+  ws   ,
+  specs2 % Test
+)
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
