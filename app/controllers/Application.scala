@@ -19,12 +19,15 @@ class Application extends Controller {
 
   val crawler = system.actorOf(Props(new Crawler(system)))
 
-  crawler ! Start(new URL("https://vach.in"))
-
-  //Await.result(system.whenTerminated, 10 minutes)
-
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
+  }
+
+  def startIndexing(url: String) =  Action.async {
+    crawler ! Start(new URL(url))
+    Future {
+      Ok(s"Indexing started for url $url")
+    }
   }
 
   def killActor = Action.async {
@@ -34,5 +37,7 @@ class Application extends Controller {
       Ok("true")
     }
   }
+
+  //Await.result(system.whenTerminated, 10 minutes)
 
 }
