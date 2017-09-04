@@ -19,23 +19,11 @@ class Indexer(crawler: ActorRef) extends Actor {
         indexMap += (url -> content)
         println(indexMap.keys.size, "Indexed the URL: ", url)
         printIndexedContent(url)
-        crawlUrls(content.urls)
       }else{
         println(url, "URL already indexed")
       }
     }
 
-  }
-
-  def crawlUrls(urls: List[URL]) = {
-    if(indexMap.keys.size > 1000){ //Killing crawler after crawling 1000 pages
-      crawler ! PoisonPill
-    }
-    urls.foreach(url => {
-      if(!indexMap.contains(url)) {
-        crawler ! Start(url)
-      }
-    })
   }
 
   def printIndexedContent(url: URL) = {
